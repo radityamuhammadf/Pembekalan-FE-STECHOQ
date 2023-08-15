@@ -9,13 +9,15 @@ const nameInput=ref('')
 
 <template>
     <h1>This is List</h1>
-    <input 
+    <input
+     class="input" 
      v-model="nameInput" 
      type="text"
      name="name" 
      @keyup.enter="store.addList(nameInput);nameInput=''"
-    />
-    <ol>
+     placeholder="add new list"
+     />
+    <ol class="list">
         <template v-for="item in store.getList" v-bind:key="item">
             <li>{{ item.name }}</li>       
         </template>
