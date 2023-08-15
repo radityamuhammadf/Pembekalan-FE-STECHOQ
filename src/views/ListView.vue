@@ -1,38 +1,23 @@
-<script>
-export default {
-    name: 'ListView',
-    data: () => ({
-        input: {
-            name:''
-        },
-        list: [
-            {
-                name: 'First List'
-            },
-            {
-                name: 'Second List'
-            }
-        ]
-    }),
-    methods: {
-        addList(){
-            if(this.input.name){
-                this.list.push({...this.input})
-                this.input.name = ''
-            }
-        }
-    }
-}
+<script setup>
+import {ref} from 'vue'
+import {useListStore} from '@/stores/list'
+
+const store = useListStore();
+const nameInput=ref('')
+
 </script>
 
 <template>
-    <div>
-        <h1>This is List</h1>
-        <input v-model="input.name" type="text" @keyup.enter="addList"/>
-        <ol>
-            <template v-for="(item,index) in list" :key="index">
-                <li>{{ item.name }}</li>       
-            </template>
-        </ol>
-    </div>
+    <h1>This is List</h1>
+    <input 
+     v-model="nameInput" 
+     type="text"
+     name="name" 
+     @keyup.enter="store.addList(nameInput);nameInput=''"
+    />
+    <ol>
+        <template v-for="item in store.getList" v-bind:key="item">
+            <li>{{ item.name }}</li>       
+        </template>
+    </ol>
 </template>
