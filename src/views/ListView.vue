@@ -22,12 +22,36 @@ export default {
   <div>
     <h1>List</h1>
 
-    <input v-model="input.name" type="text" @keyup.enter="addList({ ...input }); input.name = ''" />
+    <input 
+        class="input"
+        v-model="input.name"
+        type="text"
+        @keyup.enter="
+            ($event) => {
+                addList({...input})
+                input.name=''//bersihin inputan
+            }
+        "
+        placeholder="Add New List" 
+    />
 
-    <ol>
+    <ol class="list">
       <template v-for="(item, index) in getList" :key="index">
         <li>{{ item.name }}</li>
       </template>
     </ol>
   </div>
 </template>
+
+<!-- ngga ngerti scoped itu buat apa -->
+<style scoped>
+/* styling buat input */
+.input{
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+/* styling tampilan buat listnya */
+.list{
+    margin-block: 00.5rem;
+}
+</style>
