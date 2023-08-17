@@ -1,25 +1,33 @@
-<script setup>
-import {ref} from 'vue'
-import {useListStore} from '@/stores/list'
+<script>
+import { useListStore } from '@/stores/list'
+import { mapState, mapActions } from 'pinia'
 
-const store = useListStore();
-const nameInput=ref('')
-
+export default {
+  name: 'ListView',
+  data: () => ({
+    input: {
+      name: ''
+    }
+  }),
+  computed: {
+    ...mapState(useListStore, ['getList'])
+  },
+  methods: {
+    ...mapActions(useListStore, ['addList'])
+  }
+}
 </script>
 
 <template>
-    <h1>This is List</h1>
-    <input
-     class="input" 
-     v-model="nameInput" 
-     type="text"
-     name="name" 
-     @keyup.enter="store.addList(nameInput);nameInput=''"
-     placeholder="add new list"
-     />
-    <ol class="list">
-        <template v-for="item in store.getList" v-bind:key="item">
-            <li>{{ item.name }}</li>       
-        </template>
+  <div>
+    <h1>List</h1>
+
+    <input v-model="input.name" type="text" @keyup.enter="addList({ ...input }); input.name = ''" />
+
+    <ol>
+      <template v-for="(item, index) in getList" :key="index">
+        <li>{{ item.name }}</li>
+      </template>
     </ol>
+  </div>
 </template>

@@ -1,26 +1,24 @@
-import {reactive,computed} from 'vue'
 import { defineStore } from 'pinia'
 
-
-export const useListStore = defineStore('list', ()=>{
-    const list = reactive([
-        {
-            name: 'First List'
-        },
-        {
-            name: 'Second List'
-        }
-    ])
-    
-    //getter
-    const getList=computed(()=>list)
-
-    //action
-    function addList(params){
-        if(params){
-            list.push({name:params})
-        }
+export const useListStore = defineStore({
+  id: 'list',
+  // state is same as data in options api
+  state: () => ({
+    list: [
+      {
+        name: 'First List'
+      },
+      {
+        name: 'Second List'
+      }
+    ]
+  }),
+  actions: {
+    addList(data) {
+      this.list = [...this.list, data]
     }
-
-    return{list, getList, addList}
+  },
+  getters: {
+    getList: ({ list }) => list
+  }
 })
