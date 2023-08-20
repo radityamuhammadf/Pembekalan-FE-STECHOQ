@@ -83,7 +83,7 @@ export default {
         <br>
         <input v-model="input.completed" type="checkbox"/>
         <br>
-        <button type="submit">Add</button>
+        <button type="submit">{{editing!==false?'Edit':'Add'}}</button>
         <button type="reset">Cancel</button>
     </form>
 
