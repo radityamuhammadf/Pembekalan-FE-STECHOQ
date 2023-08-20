@@ -51,7 +51,13 @@ export default {
     detailList(index){
       //set editing state into true in these index parameter
       this.input={...this.getDetail(index)}
-    }
+    },
+    // THE checklist function
+    toggleCompleted(index){
+      const detail=this.getDetail(index)
+      this.editIndex(index,{...detail,completed: !detail.completed})
+    } 
+
   }
 }
 </script>
@@ -81,9 +87,10 @@ export default {
         <button type="reset">Cancel</button>
     </form>
 
+    <!--THE list view after inputing -->
     <ol class="list">
       <template v-for="(item, index) in getList" :key="index">
-        <li>
+        <li @dblclick="()=>toggleCompleted(index)" :class="{ strike:item.completed}">
           <!--trigger edit by index-->
             <button class="red" @click="($event) => removeIndex(index)" :disabled="editing!==false">
               &times;
@@ -110,6 +117,9 @@ export default {
 /* styling tampilan buat listnya */
 .list{
     margin-block: 0.5rem;
+}
+.strike{
+  text-decoration: line-through;
 }
 button.red{
   color:red;
