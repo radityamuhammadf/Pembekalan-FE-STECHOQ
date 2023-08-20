@@ -38,6 +38,7 @@ export default {
     addForm(event){
         console.log(event)
         //check if the editing state is false
+        //determine
         if (this.editing===false){
           //input string into action addList from list.js
           this.addList({...this.input})//still confused abt these "..." tho
@@ -55,7 +56,9 @@ export default {
     // THE checklist function
     toggleCompleted(index){
       const detail=this.getDetail(index)
+      //pass all entries in detail object
       this.editIndex(index,{...detail,completed: !detail.completed})
+      //take completed value then toggle it
     } 
 
   }
