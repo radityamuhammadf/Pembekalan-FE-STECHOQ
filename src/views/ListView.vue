@@ -47,6 +47,7 @@ export default {
             v-model="input.name"
             class="input"
             placeholder="Input Task Here"
+            required
             >
         </base-input>
         
@@ -54,6 +55,7 @@ export default {
             v-model="input.description"
             class="input"
             placeholder="Description"
+            required
         ></base-input>
         <br>
         <input v-model="input.completed" type="checkbox"/>
