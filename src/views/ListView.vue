@@ -14,7 +14,8 @@ const initialInput ={
 export default {
   name: 'ListView',
   data: () => ({
-    input: { ...initialInput }
+    input: { ...initialInput },
+    editing:false
   }),
   //declare component, after import
   components:{
@@ -22,18 +23,34 @@ export default {
   },
   computed: {
     // gangerti ini apa
-    ...mapState(useListStore, ['getList'])
+    ...mapState(useListStore, ['getList','getDetail'])
   },
     // ini juga kurang ngerti, tapi saya manut hehe
   methods: {
-    ...mapActions(useListStore, ['addList','removeIndex']),
+    ...mapActions(useListStore, ['addList','editIndex','removeIndex']),
+    resetForm(){
+      //reset input using initial value --> yang blank itu
+      Object.assign(this.input,initialInput)
+      //reset editing state to false
+      this.editing=false
+    },
     // submit isi dari form
     addForm(event){
         console.log(event)
-        //input string into action addList from list.js
-        this.addList({...this.input})//still confused abt these "..." tho
-        //empty the form section after passing the string 
-        Object.assign(this.input,initialInput)
+        //check if the editing state is false
+        if (this.editing===false){
+          //input string into action addList from list.js
+          this.addList({...this.input})//still confused abt these "..." tho
+        }
+        else{//if the editing state is true
+          this.editIndex(this.editing,{...this.input})
+        }
+        //newly made resetform function
+        this.resetForm()
+    },
+    detailList(index){
+      //set editing state into true in these index parameter
+      this.input={...this.getDetail(index)}
     }
   }
 }
@@ -42,7 +59,7 @@ export default {
 <template>
   <div>
     <h1>List</h1>
-    <form @submit.prevent="($event)=>addForm($event)" method="post">
+    <form @submit.prevent="($event)=>addForm($event)" method="post" @reset="()=>resetForm()">
         <base-input
             v-model="input.name"
             class="input"
@@ -61,13 +78,19 @@ export default {
         <input v-model="input.completed" type="checkbox"/>
         <br>
         <button type="submit">Add</button>
+        <button type="reset">Cancel</button>
     </form>
 
     <ol class="list">
       <template v-for="(item, index) in getList" :key="index">
         <li>
-            <button class="red" @click="($event) => removeIndex(index)">
+          <!--trigger edit by index-->
+            <button class="red" @click="($event) => removeIndex(index)" :disabled="editing!==false">
               &times;
+            </button>
+            <button class="orange" @click="()=>detailList(index)" :disabled="editing !==false">
+              <!--ini teh apa....-->
+              &#9998;
             </button>
             {{ item.name }}
             {{ item?.description ? `- ${item.description}`:'' }}
@@ -90,5 +113,8 @@ export default {
 }
 button.red{
   color:red;
+}
+button.orange{
+  color:orange;
 }
 </style>
