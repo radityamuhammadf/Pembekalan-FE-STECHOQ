@@ -23,6 +23,17 @@ const router = createRouter({
       component: () => import('@/views/ListView.vue')
     },
     {
+      path:'/profile',
+      //nested routes
+      children:[
+        {
+          path:'',
+          name:'Login',
+          component:()=>import('@/views/Profile/LoginView.vue')
+        },
+      ]
+    },
+    {
       //get all routes. i mean, what for?
       path:'/:pathMatch(.*)*',
       name: 'Match All',
